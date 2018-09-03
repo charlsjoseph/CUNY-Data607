@@ -5,10 +5,15 @@ date: "August 28, 2018"
 output: html_document
 ---
 
-Loading the data from the data file(agaricus-lepiota.data)
+
+Assignment Solution for the Data607 -Week 1
+
+Load the data from the git repository (agaricus-lepiota.data) using rcurl package. 
 
 ```{r Loading_Data}
-agaricus.lepiota <- read.csv("~/CunyMSDS/agaricus-lepiota.data")
+require(RCurl)
+dataLink <- getURL("https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week1/607-week1-Assignment/agaricus-lepiota.data", ssl.verifypeer = FALSE)
+agaricus.lepiota <- read.csv(text = dataLink)
 ```
 
 Extracting the 4 columns 
@@ -30,7 +35,7 @@ head(edat1)
 ```
 
 
-Tranforming data using sapply function. Below code transform the abbreviation into a meaningfull name. Try using apply function so that the transaformation on all columns is done once. 
+Tranforming data using sapply function. Below code transform the abbreviation into a meaningfull name. 
 
 
 ```{r transform_Data}
