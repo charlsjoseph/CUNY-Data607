@@ -1,0 +1,82 @@
+---
+title: "MushroomDataAnalysis"
+author: "Charls Joseph"
+date: "August 28, 2018"
+output: html_document
+---
+
+Loading the data from the data file(agaricus-lepiota.data)
+
+```{r Loading_Data}
+agaricus.lepiota <- read.csv("~/CunyMSDS/agaricus-lepiota.data")
+```
+
+Extracting the 4 columns 
+Using slicing [] operator to fetch all rows and specific columns.
+
+df[ rows, columns ]  <br>
+
+1. Type ( edible=e, poisonous=p ) <br>
+2. cap-shape  (bell=b,conical=c,convex=x,flat=f,knobbed=k,sunken=s) <br>
+3. cap-surface (fibrous=f,grooves=g,scaly=y,smooth=s) <br>
+4. odor (almond=a,anise=l,creosote=c,fishy=y,foul=f, musty=m,none=n,pungent=p,spicy=s) <br>
+
+
+```{r Extract_Column}
+edat1 <- agaricus.lepiota[, c(1:3, 6)]
+head(edat1)
+colnames(edat1) <- c("type", "capshape", "capsurface", "odor")
+head(edat1)
+```
+
+
+Tranforming data using sapply function. Below code transform the abbreviation into a meaningfull name. Try using apply function so that the transaformation on all columns is done once. 
+
+
+```{r transform_Data}
+
+edat1$type <- sapply(edat1$type, function(x)
+{switch(as.character(x), 
+        "e" = "edible", 
+        "p" = "pois")
+})
+
+
+edat1$capshape <- sapply(edat1$capshape, function(x)
+{switch(as.character(x), 
+        "b" = "bell", 
+        "c" = "conical", 
+        "f" = "flat" , 
+        "k"= "knobbed", 
+        "s"= "sunken", 
+        "x"="convex")
+})
+
+edat1$capsurface <- sapply(edat1$capsurface, function(x)
+{switch(as.character(x), 
+        "f" = "fibrous", 
+        "g" = "grooves", 
+        "y" = "scaly" , 
+        "s"= "smooth")
+})
+
+edat1$odor <- sapply(edat1$odor, function(x)
+{switch(as.character(x), 
+        "a" = "almond", 
+        "l" = "anise", 
+        "c" = "creosote" , 
+        "y"= "fishy", 
+        "f" = "foul", 
+        "m" = "musty" , 
+        "n" = "none" , 
+        "p" = "pungent", 
+        "s" = "spicy")
+})
+
+```
+
+Printing the head of transformed data. 
+
+```{r}
+head(edat1)
+```
