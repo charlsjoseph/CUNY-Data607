@@ -1,0 +1,66 @@
+---
+title: "Movie Ratings"
+author: "Charls Joseph"
+date: "September 9, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require("RMySQL")
+require("dplyr")
+require("htmlTable")
+```
+
+## Load Data frame from the mySql
+
+### Database name :movies
+
+### Tables : movie_ratings and movies
+
+Make sure 'movies' and 'movie_ratings' tables present in the 'movies' database
+
+```{r}
+
+mydb = dbConnect(MySQL(), user='root', password='mysql@123', dbname='movies', host='localhost')
+movie_ratings <- dbGetQuery(mydb, "select * from movie_ratings")
+movies <- dbGetQuery(mydb, "select * from movies")
+head(movie_ratings)
+head(movies)
+
+```
+
+## inner_join(), group_by(), summarise() and sort() functions ( from dplyr package)
+
+group_by function seprates data frame into different group based on the specified columns.
+This object doesn't seem useful by itself, the real power comes when we use this with other function like summarise which does aggregation
+
+Note: summarise() takes the data frame and apply one or more aggregation function. For eg:
+avg_rating is the mean aggregation.
+
+group_by() takes the data frame and create group based on specified columns
+with() uses to order a dataframe by a specified column
+
+```{r}
+
+movie_ratings_join <- inner_join(movie_ratings, movies, by = c("movie_id" = "movie_id"))
+
+#group by movie_name and movie_type
+grp_movie_name_type <- group_by(movie_ratings_join, movie_name, movie_type)
+
+#top rated movie df
+top_rated_movie_name <- summarise(grp_movie_name_type, avg_rating=mean(rating, na.rm=TRUE))
+
+#top rated 3 movies( slice operator using with() and order() function )
+top_rated_movies <- head(top_rated_movie_name[with(top_rated_movie_name, order(-avg_rating)),],3)
+```
+
+## Print Top Rated movies
+
+```{r}
+htmlTable(top_rated_movies, caption = 'Top rated Movies')
+
+
+```
+
+
