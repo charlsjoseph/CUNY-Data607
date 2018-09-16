@@ -1,0 +1,156 @@
+---
+title: "R Regex and String Manipulation"
+author: "Charls Joseph"
+date: "September 16, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+```
+
+## R Markdown
+
+
+### Question 3. 
+Copy the introductory example. The vector name stores the extracted names.
+R> name
+[1] "Moe Szyslak" "Burns, C. Montgomery" "Rev. Timothy Lovejoy"
+[4] "Ned Flanders" "Simpson, Homer" "Dr. Julius Hibbert"
+(a) Use the tools of this chapter to rearrange the vector so that all elements conform to
+the standard first_name last_name.
+
+```{r}
+raw.data <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555
+-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson,
+Homer5553642Dr. Julius Hibbert"
+
+name <- unlist(str_extract_all(raw.data, "[[:alpha:]., ]{2,}"))
+step1 <- sub(" [A-z]{1}\\. "," ",name)  # remove initials
+step2 <- sub("(\\w+),?\\s(\\w+)","\\2 \\1", step1) # switch last,first to first last 
+step3 <- sub("[A-z]{2,}\\. ","",step2)  # remove titles
+standard_name <- gsub('^[[:punct:]]|[[:punct:]]$', '', step3) # trim any punctuations if any. 
+
+standard_name
+
+```
+
+(b) Construct a logical vector indicating whether a character has a title (i.e., Rev. and
+Dr.).
+
+```{r}
+title <- str_detect(name,"[A-z]{2,}\\. ") #logical vector to show the title.
+title
+
+```
+
+
+
+(c) Construct a logical vector indicating whether a character has a second name.
+
+```{r}
+
+second_name <- str_detect(name," [A-z]{1}\\. ") #logical vector to show the second name. 
+second_name
+
+nameDF <- data.frame(standard_name,title, second_name)
+names(nameDF) <- c("Name" , "Title", "Second_Name")
+nameDF
+```
+
+
+
+###Question 4. 
+Describe the types of strings that conform to the following regular expressions and
+construct an example that is matched by the regular expression.
+(a) [0-9]+\\$
+Regex to extract the digit sufixed with $ 
+
+
+```{r }
+strA <- "The price of my watch is 67$"
+
+dollarValues <- str_extract_all(strA , "[0-9]+\\$")
+dollarValues
+```
+
+
+(b) \\b[a-z]{1,4}\\b
+
+This reges expression extract a word matches 1 to 4 character lower case letters. 
+ 
+
+```{r}
+strB <-  "Lord says, My grace is sufficient for you, for my power is made perfect in weakness. Therefore I will boast all the more gladly about my weaknesses, so that Christ power may rest on me."
+
+words <- str_extract_all(strB , "\\b[a-z]{1,4}\\b")
+words
+
+```
+
+
+
+(c) .*?\\.txt$
+
+This regex extract the any character pattern ending with .txt. This can be used to fetch the filenames. 
+
+```{r}
+
+filenames <- "Automatic_data_collection.txt"
+files <- str_extract_all(filenames , ".*?\\.txt$")
+files
+
+```
+
+(d) \\d{2}/\\d{2}/\\d{4}
+
+This Regex extract the date pattern dd/mm/yyyy. 
+
+01/01/1982
+
+```{r}
+
+numericalue <- "56/56 20/11/2017  "
+date_pattern <- str_extract_all(numericalue , "\\d{2}/\\d{2}/\\d{4}")
+date_pattern
+
+```
+
+
+
+(e) <(.+?)>.+?</\\1>
+
+This Regex matches the open and close tag and the value inside the tag. 
+
+```{r}
+
+htmltag <- "5635 <name>charls joseph</name>38787"
+tags <- str_extract_all(htmltag , "<(.+?)>.+?</\\1>")
+tags
+  
+  
+```
+
+### Question 9:
+The following code hides a secret message. Crack it with R and regular expressions.
+Hint: Some of the characters are more revealing than others! The code snippet is also
+available in the materials at www.r-datacollection.com.
+
+clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0Tanwo
+Uwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigO
+d6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5
+fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr
+
+```{r}
+message <- "clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0Tanwo
+Uwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigO
+d6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5
+fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr"
+
+secret_message <- str_extract_all(message , "[[:upper:][:punct:]]")
+secret_message
+
+```
+
+

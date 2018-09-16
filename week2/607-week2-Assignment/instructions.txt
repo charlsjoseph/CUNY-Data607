@@ -1,0 +1,6 @@
+
+
+Git hub link for Assignment artifacts: ( Please refer ReadMe.txt to load the data)
+https://github.com/charlsjoseph/CUNY-Data607/tree/master/week2/607-week2-Assignment
+
+Rmarkdown link: https://rpubs.com/charlsjoseph/data607_wk2
