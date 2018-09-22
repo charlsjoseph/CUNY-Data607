@@ -20,7 +20,8 @@ Use lapply to apply a series of replace functions to remove unwanted characters 
 ```{r extract_first_lines}
 
 
-mystring <- read_file("tournamentinfo.txt")
+mystring <- read_file("https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week3/tournamentinfo.txt")
+
 
 #extract the 1st Line using regex 
 lines1 <- str_extract_all(mystring, "\\w+.+[|]\\d+[.]\\d.+\\|")
@@ -172,7 +173,7 @@ trunc(mean(c(fetch_PreRating_oponent(as.integer(x[4])), fetch_PreRating_oponent(
 })
 
 finalResult <- players.data[,c("names", "state" , "points", "avgPreRating")]
-
+write.csv(finalResult, "finalResults.csv")
 finalResult
 ```
 

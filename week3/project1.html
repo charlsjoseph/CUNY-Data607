@@ -132,7 +132,7 @@ $(document).ready(function () {
 <div id="step-1-extract-the-row-data-using-regex-expression." class="section level2">
 <h2>Step-1 : Extract the row data using Regex expression.</h2>
 <p>Line1 is extracted using Regex and used couple of replace code to remove unwanted spaces and characters. Use lapply to apply a series of replace functions to remove unwanted characters and extra space and end result will be delimited with “|”</p>
-<pre class="r"><code>mystring &lt;- read_file(&quot;tournamentinfo.txt&quot;)
+<pre class="r"><code>mystring &lt;- read_file(&quot;https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week3/tournamentinfo.txt&quot;)
 
 #extract the 1st Line using regex 
 lines1 &lt;- str_extract_all(mystring, &quot;\\w+.+[|]\\d+[.]\\d.+\\|&quot;)
