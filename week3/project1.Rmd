@@ -1,0 +1,178 @@
+---
+title: "Project1 - Tournament results"
+author: "Charls Joseph"
+date: "September 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(stringr)
+```
+
+## Step-1 : Extract the row data using Regex expression.
+
+
+Line1 is extracted using Regex and used couple of replace code to remove unwanted spaces and characters. 
+Use lapply to apply a series of replace functions to remove unwanted characters and extra space and end result will be delimited with "|"
+
+```{r extract_first_lines}
+
+
+mystring <- read_file("tournamentinfo.txt")
+
+#extract the 1st Line using regex 
+lines1 <- str_extract_all(mystring, "\\w+.+[|]\\d+[.]\\d.+\\|")
+
+firstlines <- lapply(lines1, function (x){
+  x <- str_replace_all(x, "[|][A-Z]\\s{1,}", "|")
+  x <- str_replace_all(x, "\\s{2,}" , "")
+  x<- str_replace_all(x, "[|]{2}" , "|0|")
+  str_replace_all(x, "[|]{2}" , "|0|")
+})
+
+head(firstlines)
+```
+
+## Step-2 : Extract the names, points and calculate the average Points from first Line. 
+
+
+Format the firstLines and extract the data into names, points and averagePoints vector variables.
+notes: used str_split() function to split the line with the delimiter "|"
+
+For e.g 
+1 | GARY HUA|6.0|39|21|18|14|7|12|4|
+Extract following into names, points, averagePoints vector variables
+
+names ="GARY HUA"
+points = 6.0
+averagePoints = mean(21,18,14,7,12,4)
+
+```{r format_names_point_avg}
+names <- c()
+id <- c()
+points <- c()
+round1 <- c()
+round2 <- c()
+round3 <- c()
+round4 <- c()
+round5 <- c()
+round6 <- c()
+round7 <- c()
+for (row in unlist(firstlines)) {
+  ar<- unlist(str_split(row, fixed("|")))
+  id <- c(id, as.integer(ar[1]))
+  names <- c(names, ar[2])
+  points <- c(points, ar[3])
+  print(row)
+  round1 <- c(round1, as.integer(ar[4]))
+  round2 <- c(round2, as.integer(ar[5]))
+  round3 <- c(round3, as.integer(ar[6]))
+  round4 <- c(round4, as.integer(ar[7]))
+  round5 <- c(round5, as.integer(ar[8]))
+  round6 <- c(round6, as.integer(ar[9]))
+  round7 <- c(round7, as.integer(ar[10]))
+}
+length(round7)
+
+```
+
+## Step-3 : Extract the state and the Pre-rating data from second line 
+
+### 1. Extract state data and store in statesData vectors  
+
+```{r extract_state_data} 
+
+statesData <- str_extract_all(mystring, ".+[A-Z]{2}\\s{1}[|]")
+states = c()
+for (state in unlist(statesData)) {
+  state <- str_replace_all(state, "\\s+" , "")
+  state <- str_replace_all(state, "[|]" , "")
+  states <- c(states, state)
+}
+
+states
+length(states)
+
+```
+
+
+### 2. Extract Pre-rating data and store into prepostData   
+
+```{r extract_preRateData}
+preRating = c()
+prepostData <- str_extract_all(mystring, "[0-9,A-Z]+\\s*->\\s?[0-9,A-Z]+")
+for (prepost in unlist(prepostData)) {
+  prepost <- str_replace_all(prepost, "P?[\\d+]?.?->" , "|")
+  ar<- unlist(str_split(prepost, fixed("|")))
+  preRating <- c(preRating,as.integer(ar[1]))
+}
+preRating
+```
+
+## Step-4 Create a dataframe with following columns. 
+
+id=id
+names
+points
+oponent1
+oponent2
+oponent3
+oponent4
+oponent5
+oponent6
+oponent7
+state 
+preRating
+
+```{r create_df}
+players.data <- data.frame(id=id,names=names,points=points, oponent1=round1,
+                           oponent2=round2,
+                           oponent3=round3,
+                           oponent4=round4,
+                           oponent5=round5,
+                           oponent6=round6,
+                           oponent7=round7,
+                          state=states ,preRating=preRating  )
+
+head(players.data)
+
+```
+
+## Final Step: Calculate the average Prerating of Opponents
+
+Created a fn called fetch_PreRating_oponent to fetch the prerating for the opponent
+
+#### fn: fetch_PreRating_oponent
+
+Input Parameter: Opponent Id 
+
+OutPut Parameter : PreRating Value
+
+
+use Apply function to generate a new calculated column called "avgPreRating"
+
+
+```{r final_step}
+
+fetch_PreRating_oponent <- function(oponent) {
+  
+  df= players.data[players.data[1] == oponent ]
+  c <- as.integer(df[12])
+  if (is.na(c)) {
+        c <- 0
+  }
+  return(c)
+}
+
+players.data$avgPreRating <- apply(players.data, MARGIN=1, function(x){
+trunc(mean(c(fetch_PreRating_oponent(as.integer(x[4])), fetch_PreRating_oponent(as.integer(x[5])), fetch_PreRating_oponent(as.integer(x[6])), fetch_PreRating_oponent(as.integer(x[7])), fetch_PreRating_oponent(as.integer(x[8])), fetch_PreRating_oponent(as.integer(x[9])), fetch_PreRating_oponent(as.integer(x[10])))))
+
+})
+
+finalResult <- players.data[,c("names", "state" , "points", "avgPreRating")]
+
+finalResult
+```
+
