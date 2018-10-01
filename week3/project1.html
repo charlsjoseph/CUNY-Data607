@@ -134,6 +134,7 @@ $(document).ready(function () {
 <p>Line1 is extracted using Regex and used couple of replace code to remove unwanted spaces and characters. Use lapply to apply a series of replace functions to remove unwanted characters and extra space and end result will be delimited with “|”</p>
 <pre class="r"><code>mystring &lt;- read_file(&quot;https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week3/tournamentinfo.txt&quot;)
 
+
 #extract the 1st Line using regex 
 lines1 &lt;- str_extract_all(mystring, &quot;\\w+.+[|]\\d+[.]\\d.+\\|&quot;)
 
@@ -397,7 +398,7 @@ trunc(mean(c(fetch_PreRating_oponent(as.integer(x[4])), fetch_PreRating_oponent(
 })
 
 finalResult &lt;- players.data[,c(&quot;names&quot;, &quot;state&quot; , &quot;points&quot;, &quot;avgPreRating&quot;)]
-
+write.csv(finalResult, &quot;finalResults.csv&quot;)
 finalResult</code></pre>
 <pre><code>##                          names state points avgPreRating
 ## 1                     GARY HUA    ON    6.0         1605

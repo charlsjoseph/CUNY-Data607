@@ -1,0 +1,73 @@
+---
+title: "Tidying and transformation"
+author: "Charls Joseph"
+date: "September 30, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#install.packages("tidyr")
+
+library(readr)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+
+```
+
+```{r}
+
+
+flightsData <- data.frame(read_csv(""))
+
+which(!is.na(flightsData[1]))
+
+flightsData[1] <- rep(flightsData[which(!is.na(flightsData[1])), 1], each = 2)
+
+
+colnames(flightsData)[1:2] <- c("FlightName" , "status")
+head(flightsData)
+
+
+```
+
+## Using tydyr metods Gather() and Spread() which enlarges the data. 
+
+Gather() will enlarge data with colum key/Value 
+Spread() will enlrage date with Row key/value.
+
+```{r tidy}
+flightsData1 <- flightsData %>% gather(desitination, count, 3:7)
+
+head(flightsData1)
+
+flightsData2 <- flightsData1 %>% spread(status, count)
+
+colnames(flightsData2) <- str_replace(colnames(flightsData2), " ", "_")
+
+
+head(flightsData2)
+
+```
+
+## Calculate delay Rate for a flight 
+
+```{r}
+flightsData3 <- flightsData2 %>% mutate(delay_rate = delayed / (delayed + on_time))
+head(flightsData3)
+
+```
+
+
+
+```{r}
+
+
+ggplot(flightsData3, aes(desitination, delay_rate)) + 
+  geom_bar(aes(fill = FlightName), position = "dodge", stat = "identity") + 
+  ylab("Delay Rate")
+
+```
