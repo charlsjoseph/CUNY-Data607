@@ -5,10 +5,18 @@ date: "September 30, 2018"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-#install.packages("tidyr")
+```
+
+This assignment is to read the arrival delays for two airlines across five destination from a csv file. 
+The data needs to be transformed using tidyr methods spread() and gather() in order to analyse the delay rate between two airlines. 
+
+## Library Required
+
+```{r}
 
 library(readr)
 library(tidyr)
@@ -18,32 +26,41 @@ library(ggplot2)
 
 ```
 
-```{r}
+## Read csv and fill the missing column names
 
+```{r read_csv}
+flightsData <- data.frame(read_csv("https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week5/FlightData.csv"))
 
-flightsData <- data.frame(read_csv(""))
+head(flightsData)
 
-which(!is.na(flightsData[1]))
+```
+
+Added flightname and the status into column. 
+flightname is missing on the alternate row. 
+
+```{r missing_data}
 
 flightsData[1] <- rep(flightsData[which(!is.na(flightsData[1])), 1], each = 2)
 
-
 colnames(flightsData)[1:2] <- c("FlightName" , "status")
 head(flightsData)
-
 
 ```
 
 ## Using tydyr metods Gather() and Spread() which enlarges the data. 
 
-Gather() will enlarge data with colum key/Value 
-Spread() will enlrage date with Row key/value.
+Gather() puts column values into row data.  desitination, count are the new columns 
 
-```{r tidy}
+```{r tidy_Gather}
 flightsData1 <- flightsData %>% gather(desitination, count, 3:7)
 
 head(flightsData1)
 
+```
+
+Spread() puts row value into column. values on status is the new columns
+
+```{r tidy_Spread}
 flightsData2 <- flightsData1 %>% spread(status, count)
 
 colnames(flightsData2) <- str_replace(colnames(flightsData2), " ", "_")
@@ -55,13 +72,15 @@ head(flightsData2)
 
 ## Calculate delay Rate for a flight 
 
+delay Rate is calculated by the  delayed / (delayed + on_time
 ```{r}
 flightsData3 <- flightsData2 %>% mutate(delay_rate = delayed / (delayed + on_time))
 head(flightsData3)
 
 ```
 
-
+## Plot the chart 
+Plot the chart with X axis as flights and y as Delay Rate. From the chart, it is evident that the "Am WEST" is having higher Delay Rate for all destination locations. 
 
 ```{r}
 
