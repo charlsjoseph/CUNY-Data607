@@ -1,0 +1,150 @@
+---
+title: "CleaningTidy Project Data607 "
+author: "Charls Joseph"
+date: "October 7, 2018"
+output: html_document
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Data607 Tidying and transformation Project 
+
+In this project, I am asked to select 3 'wide' datasets and use tidyr and dplyr as needed to tidy and transform your data.
+
+####  Library Required
+
+Below libraries used. 
+tidyr  -> provides two important functions gather() and spread()
+dplyr -> provides select(), filter, group_by, summarize and mutate
+
+```{r}
+
+library(readr)
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(knitr)
+
+```
+
+
+## DataSet1 : Major League Baseball Team
+This data set can be found on the https://www.baseball-reference.com/leagues/MLB/
+and it includes every MLB team from all time, there wins, and the games played in that year.
+
+Dataset is available in csv format to download. 
+
+Below snippet will read the csv file and print first few samples. 
+
+```{r read_mlb_csv}
+mlbData <- data.frame(read_csv("dataset/MLB.csv"))
+
+head(mlbData)
+
+```
+
+## Transform the wide format into Long format. 
+
+Below snippet transform the dataset from wide format to long. 
+
+```{r tranform_wide}
+
+mlbData <- mlbData %>% gather(team, wins, 3:length(colnames(mlbData)))
+head(mlbData)
+
+```
+
+## Tranform with dplyr funcions. 
+
+Since the number of Games in each year varies, the points can be used for comparison purpose, So have to create a new column for win percentage(win_pct) and is calculated by total number of wins/ total no of Games.
+
+```{r dypr_transform}
+
+mlbData <- mlbData %>% mutate(win_pct = wins/G)
+head(mlbData)
+
+```
+
+Print the topper and their points since 2000. 
+
+```{r topper }
+
+mlbData <- mlbData %>% filter(Year >= 2000)
+
+mlbData_byyear_byteam = mlbData %>% group_by(Year, team)
+
+mlbData_byyear = mlbData %>% group_by(Year) %>% summarise( max_wins = max(wins, na.rm = TRUE))  %>% arrange(-Year)
+
+topper <- inner_join(mlbData_byyear, mlbData_byyear_byteam,   c("Year" = "Year", "max_wins" = "wins")  ) %>% select(Year, max_wins , team)
+kable(topper)
+
+```
+
+
+
+
+## DataSet2 : Sample dataset of babies height from year 2011 to year 2015.
+
+Below snippet will read the csv file and print first few samples. 
+
+
+```{r read_csv}
+babiesHeightData <- data.frame(read_csv("dataset/babies_heights.csv"))
+
+head(babiesHeightData)
+
+```
+
+## Format the column name to year 
+
+```{r }
+
+colnames(babiesHeightData)[3:7] <- c("2011", "2012" , "2013" , "2014" , "2015")
+colnames(babiesHeightData)
+
+
+```
+
+
+## Transform from wide to long dataset 
+
+Using tidyr gather() method, transform the wide format to long. Year column value becomes row data value. 
+
+```{r}
+babiesHeightData <- babiesHeightData %>% gather(year, height, 3:7)
+
+head(babiesHeightData)
+
+```
+
+## Average heights by year and by age. 
+
+using dplyr( using pipe), calculate the average heights by year and by age. 
+
+
+```{r}
+
+heights_by_gender_by_year = babiesHeightData %>% group_by(year,gender) %>% summarise(mean_height = mean(height, na.rm = TRUE))
+
+heights_by_gender_by_year
+
+```
+
+## Plot average height for each year( for Male and Female)
+
+Below R snippet plot a bar chart showing year on the X-axis and average heights on the Y-axis 
+
+```{r}
+
+ggplot(heights_by_gender_by_year, aes(year, mean_height)) + 
+  geom_bar(aes(fill = gender), position = "dodge", stat = "identity") + 
+  ylab("Average Height")
+
+
+
+```
