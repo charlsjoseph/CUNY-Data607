@@ -33,7 +33,7 @@ library(knitr)
 ```
 
 
-## DataSet1 : Major League Baseball Team
+## DataSet 1 : Major League Baseball Team
 This data set can be found on the https://www.baseball-reference.com/leagues/MLB/
 and it includes every MLB team from all time, there wins, and the games played in that year.
 
@@ -71,6 +71,7 @@ head(mlbData)
 ```
 
 Print the topper and their points since 2000. 
+used join function to join two dataset to get the top team name and its max score 
 
 ```{r topper }
 
@@ -88,12 +89,12 @@ kable(topper)
 
 
 
-## DataSet2 : Sample dataset of babies height from year 2011 to year 2015.
+## DataSet 2 : Sample dataset of babies height from year 2011 to year 2015.
 
 Below snippet will read the csv file and print first few samples. 
 
 
-```{r read_csv}
+```{r read_csv_babies_hieghts}
 babiesHeightData <- data.frame(read_csv("dataset/babies_heights.csv"))
 
 head(babiesHeightData)
@@ -148,3 +149,90 @@ ggplot(heights_by_gender_by_year, aes(year, mean_height)) +
 
 
 ```
+
+
+## DataSet 3 : High School and Beyond Data Set
+
+This dataset is found in https://rdrr.io/cran/blorr/man/hsb2.html
+Below snippet will read the csv file and print first few samples. 
+
+
+id
+id of the student
+
+female
+gender of the student
+
+race
+ethnic background of the student
+
+ses
+socio-economic status of the student
+
+schtyp
+school type
+
+prog
+program type
+
+read
+scores from test of reading
+
+write
+scores from test of writing
+
+math
+scores from test of math
+
+science
+scores from test of science
+
+socst
+scores from test of social studies
+
+
+
+
+```{r read_csv_hsb2}
+hsb2Data <- data.frame(read_csv("dataset/hsb2.csv"))
+
+head(hsb2Data)
+
+```
+
+
+## Transform from wide to long dataset 
+
+Using tidyr gather() method, transform the wide format to long. Year column value becomes row data value. 
+
+```{r}
+hsb2Data <- hsb2Data %>% gather(ability, score, read:socst)
+
+head(hsb2Data)
+
+```
+
+## Tranform using dplyr 
+
+create a bar plot with socio-economic status of the student in X axis and average score of different abilities 
+to understand if socio-economic status has any relation with their ability. 
+
+For this we can make out that students with low socio-economic status having the score < 50 
+and students with high socio-economic status has comparatively high average score.
+
+
+```{r }
+hsb2Data$ses.f = factor(hsb2Data$ses, labels=c("low", "middle", "high")) 
+
+meanScore_byses.f_byability = hsb2Data %>% group_by(ses.f, ability) %>% summarise(mean_score = mean(score, na.rm = TRUE))
+
+head(meanScore_byses.f_byability)
+
+ggplot(meanScore_byses.f_byability, aes(ses.f, mean_score)) + 
+  geom_bar(aes(fill = ability), position = "dodge", stat = "identity") + 
+  ylab("Average Score")
+
+
+
+```
+
