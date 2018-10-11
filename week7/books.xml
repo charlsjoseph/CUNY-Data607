@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Three of my favorite comic books.
+
+-->
+
+<books>
+
+    <book category="comics">
+        <Book_Name lang="en">The Talisman</Book_Name>
+        <Author>Stephen King, Peter Straub</Author>
+        <Publisher>Pocket Books</Publisher>
+        <Year_Published>1984</Year_Published>
+        <Pages>944</Pages>
+        <Language>English</Language>
+    </book>
+    <book category="comics">
+        <Book_Name lang="en">Pearl</Book_Name>
+        <Author>John Steinbeck</Author>
+        <Publisher>Penguin Books</Publisher>
+        <Year_Published>1993</Year_Published>
+        <Pages>96</Pages>
+        <Language>English</Language>
+    </book>
+    <book category="comics">
+        <Book_Name lang="en">POEM OF THE MAN-GOD Volume 1</Book_Name>
+        <Author>Maria Valtorta</Author>
+        <Publisher>Centro Editoriale Valtortiano</Publisher>
+        <Year_Published>1990</Year_Published>
+        <Pages>995</Pages>
+        <Language>English</Language>
+    </book>
+
+</books>
+
+

@@ -42,7 +42,7 @@ Dataset is available in csv format to download.
 Below snippet will read the csv file and print first few samples. 
 
 ```{r read_mlb_csv}
-mlbData <- data.frame(read_csv("dataset/MLB.csv"))
+mlbData <- data.frame(read_csv("https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week5/project/dataset/MLB.csv"))
 
 head(mlbData)
 
@@ -95,7 +95,7 @@ Below snippet will read the csv file and print first few samples.
 
 
 ```{r read_csv_babies_hieghts}
-babiesHeightData <- data.frame(read_csv("dataset/babies_heights.csv"))
+babiesHeightData <- data.frame(read_csv("https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week5/project/dataset/babies_heights.csv"))
 
 head(babiesHeightData)
 
@@ -157,44 +157,44 @@ This dataset is found in https://rdrr.io/cran/blorr/man/hsb2.html
 Below snippet will read the csv file and print first few samples. 
 
 
-id
+id -
 id of the student
 
-female
+female -
 gender of the student
 
-race
+race -
 ethnic background of the student
 
-ses
+ses -
 socio-economic status of the student
 
-schtyp
+schtyp -
 school type
 
-prog
+prog - 
 program type
 
 read
 scores from test of reading
 
-write
+write - 
 scores from test of writing
 
-math
+math - 
 scores from test of math
 
-science
+science - 
 scores from test of science
 
-socst
+socst - 
 scores from test of social studies
 
 
 
 
 ```{r read_csv_hsb2}
-hsb2Data <- data.frame(read_csv("dataset/hsb2.csv"))
+hsb2Data <- data.frame(read_csv("https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week5/project/dataset/hsb2.csv"))
 
 head(hsb2Data)
 
