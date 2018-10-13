@@ -8,9 +8,18 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-install.packages("XML")
+#install.packages("XML")
 
 library(XML)
+library(RCurl)
+library(jsonlite)
 
 ```
 
+```{r}
+html.url <- "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.html"
+
+comic.html <- htmlParse(file = html.url )
+comic.html
+
+```
