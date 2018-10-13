@@ -13,13 +13,15 @@ knitr::opts_chunk$set(echo = TRUE)
 library(XML)
 library(RCurl)
 library(jsonlite)
+library(httr)
 
 ```
 
 ```{r}
-html.url <- "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.html"
+html.url <- "books.html"
 
-comic.html <- htmlParse(file = html.url )
-comic.html
+
+comic.html <- htmlParse(html.url )
+print(comic.html)
 
 ```
