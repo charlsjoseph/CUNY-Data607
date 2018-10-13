@@ -1,0 +1,383 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Data607\_week7\_assignment},
+            pdfauthor={Charls Joseph},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Data607\_week7\_assignment}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Charls Joseph}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{October 11, 2018}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+
+\begin{document}
+\maketitle
+
+\subsection{Assignment -- Working with XML and JSON in
+R}\label{assignment-working-with-xml-and-json-in-r}
+
+Here is the assignmnet work statment:
+
+Pick three of your favorite books on one of your favorite subjects. At
+least one of the books should have more than one author. For each book,
+include the title, authors, and two or three other attributes that you
+find interesting. Take the information that you've selected about these
+three books, and separately create three files which store the book's
+information in HTML (using an html table), XML, and JSON formats (e.g.
+``books.html'', ``books.xml'', and ``books.json''). To help you better
+understand the different file structures, I'd prefer that you create
+each of these files ``by hand'' unless you're already very comfortable
+with the file formats. Write R code, using your packages of choice, to
+load the information from each of the three sources into separate R data
+frames. Are the three data frames identical? Your deliverable is the
+three source files and the R code. If you can, package your assignment
+solution up into an .Rmd file and publish to rpubs.com. {[}This will
+also require finding a way to make your three text files accessible from
+the web{]}.
+
+\subsubsection{Libraries Requried}\label{libraries-requried}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(XML)    }
+\KeywordTok{library}\NormalTok{(RCurl)  ## required for GetURL method }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: bitops
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(jsonlite)}
+\KeywordTok{library}\NormalTok{(kableExtra)}
+\KeywordTok{library}\NormalTok{(knitr)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Reading html file and
+parsing.}\label{reading-html-file-and-parsing.}
+
+htmlParse is used to parse the html content and invoked readHTMLTable to
+extract the html table.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{html.url <-}\StringTok{ "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.html"}
+
+\NormalTok{html.url.content=}\StringTok{ }\KeywordTok{getURL}\NormalTok{(html.url)}
+\NormalTok{books.html <-}\StringTok{ }\KeywordTok{htmlParse}\NormalTok{(}\DataTypeTok{file=}\NormalTok{ html.url.content )}
+
+
+\NormalTok{books.html.df <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{readHTMLTable}\NormalTok{(books.html))}
+\NormalTok{books.html.df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 NULL.Book.Name                NULL.Author
+## 1                 The Talisman Stephen King, Peter Straub
+## 2                    The Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1             Maria Valtorta
+##                  NULL.Publisher NULL.Year.Published NULL.Pages
+## 1                  Pocket Books                1984        944
+## 2                 Penguin Books                1993         96
+## 3 Centro Editoriale Valtortiano                2000        995
+##   NULL.Language
+## 1       English
+## 2       English
+## 3       English
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(books.html.df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 NULL.Book.Name                NULL.Author
+## 1                 The Talisman Stephen King, Peter Straub
+## 2                    The Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1             Maria Valtorta
+##                  NULL.Publisher NULL.Year.Published NULL.Pages
+## 1                  Pocket Books                1984        944
+## 2                 Penguin Books                1993         96
+## 3 Centro Editoriale Valtortiano                2000        995
+##   NULL.Language
+## 1       English
+## 2       English
+## 3       English
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# print datafrane using kabble}
+
+\NormalTok{books.html.df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l|l|l}
+\hline
+NULL.Book.Name & NULL.Author & NULL.Publisher & NULL.Year.Published & NULL.Pages & NULL.Language\\
+\hline
+The Talisman & Stephen King, Peter Straub & Pocket Books & 1984 & 944 & English\\
+\hline
+The Pearl & John Steinbeck & Penguin Books & 1993 & 96 & English\\
+\hline
+POEM OF THE MAN-GOD Volume 1 & Maria Valtorta & Centro Editoriale Valtortiano & 2000 & 995 & English\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Reading XML file and
+parsing.}\label{reading-xml-file-and-parsing.}
+
+xmlParse is used to parse the xml content and invoked xmlToDataFrame to
+convert the content into dataframe
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{xml.url <-}\StringTok{ "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.xml"}
+
+\NormalTok{xml.url.content=}\StringTok{ }\KeywordTok{getURL}\NormalTok{(xml.url)}
+
+
+\NormalTok{xml.url.content <-}\StringTok{ }\KeywordTok{xmlParse}\NormalTok{(}\DataTypeTok{file=}\NormalTok{xml.url.content)}
+\NormalTok{xml.url.df <-}\StringTok{ }\KeywordTok{xmlToDataFrame}\NormalTok{(xml.url.content)}
+\NormalTok{xml.url.df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      Book_Name                     Author
+## 1                 The Talisman Stephen King, Peter Straub
+## 2                        Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1             Maria Valtorta
+##                       Publisher Year_Published Pages Language
+## 1                  Pocket Books           1984   944  English
+## 2                 Penguin Books           1993    96  English
+## 3 Centro Editoriale Valtortiano           1990   995  English
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# print datafrane using kabble}
+\NormalTok{xml.url.df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|l|l|l|l|l}
+\hline
+Book\_Name & Author & Publisher & Year\_Published & Pages & Language\\
+\hline
+The Talisman & Stephen King, Peter Straub & Pocket Books & 1984 & 944 & English\\
+\hline
+Pearl & John Steinbeck & Penguin Books & 1993 & 96 & English\\
+\hline
+POEM OF THE MAN-GOD Volume 1 & Maria Valtorta & Centro Editoriale Valtortiano & 1990 & 995 & English\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Reading JSON file and
+parsing.}\label{reading-json-file-and-parsing.}
+
+fromJSON is used to parse and convert into the json df
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{json.url <-}\StringTok{ "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.json"}
+\NormalTok{json.url.content=}\StringTok{ }\KeywordTok{getURL}\NormalTok{(json.url)}
+\NormalTok{json.url.df <-}\StringTok{ }\KeywordTok{fromJSON}\NormalTok{(json.url.content)}
+\NormalTok{json.url.df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $books
+##                       Book_Name                     Author
+## 1                  The Talisman Stephen King, Peter Straub
+## 2                         Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1              Maria Valtorta
+##                       Publisher Year Pages Language
+## 1                  Pocket Books 1984   944  English
+## 2                 Penguin Books 1993    96  English
+## 3 Centro Editoriale Valtortiano 1990   995  English
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# print datafrane using kabble}
+
+\NormalTok{json.url.df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+\centering\begin{table}
+
+\centering
+\begin{tabular}[t]{l|l|l|r|r|l}
+\hline
+Book\_Name & Author & Publisher & Year & Pages & Language\\
+\hline
+The Talisman & Stephen King, Peter Straub & Pocket Books & 1984 & 944 & English\\
+\hline
+Pearl & John Steinbeck & Penguin Books & 1993 & 96 & English\\
+\hline
+POEM OF THE MAN-GOD Volume 1 & Maria Valtorta & Centro Editoriale Valtortiano & 1990 & 995 & English\\
+\hline
+\end{tabular}
+\end{table}
+\end{table}
+
+\subsubsection{Conclusion}\label{conclusion}
+
+All three dataframes are almost same other than very minor difference in
+the column name. For e.g the column names in html df has a dot, but for
+xml and json has \_. Also the column name is prefixed with a NULL.
+
+
+\end{document}

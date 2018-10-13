@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/428843/698947c9f6f0435a8372818905f383fb
+bundleId: https://api.rpubs.com/api/v1/document/428843/698947c9f6f0435a8372818905f383fb
+url: http://rpubs.com/charlsjoseph/428843
+when: 1539437182.159

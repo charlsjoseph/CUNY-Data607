@@ -2,7 +2,9 @@
 title: "Data607_week7_assignment"
 author: "Charls Joseph"
 date: "October 11, 2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ## Assignment – Working with XML and JSON in R
@@ -27,6 +29,8 @@ accessible from the web].
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+#install.packages("kableExtra")
+
 ```
 
 ### Libraries Requried
@@ -35,6 +39,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(XML)    
 library(RCurl)  ## required for GetURL method 
 library(jsonlite)
+library(kableExtra)
+library(knitr)
+
+
 ```
 
 
@@ -51,6 +59,16 @@ books.html <- htmlParse(file= html.url.content )
 
 books.html.df <- as.data.frame(readHTMLTable(books.html))
 books.html.df
+
+head(books.html.df)
+
+
+# print datafrane using kabble
+
+books.html.df %>%
+  kable() %>%
+  kable_styling()
+
 
 ```
 
@@ -69,6 +87,11 @@ xml.url.content <- xmlParse(file=xml.url.content)
 xml.url.df <- xmlToDataFrame(xml.url.content)
 xml.url.df
 
+# print datafrane using kabble
+xml.url.df %>%
+  kable() %>%
+  kable_styling()
+
 ```
 
 ### Reading JSON file and parsing. 
@@ -81,6 +104,12 @@ json.url <- "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/
 json.url.content= getURL(json.url)
 json.url.df <- fromJSON(json.url.content)
 json.url.df
+
+# print datafrane using kabble
+
+json.url.df %>%
+  kable() %>%
+  kable_styling()
 ```
 
 ### Conclusion
