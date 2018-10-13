@@ -5,23 +5,86 @@ date: "October 11, 2018"
 output: html_document
 ---
 
+## Assignment – Working with XML and JSON in R
+
+Here is the assignmnet work statment: 
+
+Pick three of your favorite books on one of your favorite subjects. At least one of the books should have more
+than one author. For each book, include the title, authors, and two or three other attributes that you find
+interesting.
+Take the information that you’ve selected about these three books, and separately create three files which
+store the book’s information in HTML (using an html table), XML, and JSON formats (e.g. “books.html”,
+“books.xml”, and “books.json”). To help you better understand the different file structures, I’d prefer that you
+create each of these files “by hand” unless you’re already very comfortable with the file formats.
+Write R code, using your packages of choice, to load the information from each of the three sources into
+separate R data frames. Are the three data frames identical?
+Your deliverable is the three source files and the R code. If you can, package your assignment solution up into
+an .Rmd file and publish to rpubs.com. [This will also require finding a way to make your three text files
+accessible from the web].
+
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-#install.packages("XML")
+```
 
-library(XML)
-library(RCurl)
+### Libraries Requried
+```{r includle=FALSE} 
+
+library(XML)    
+library(RCurl)  ## required for GetURL method 
 library(jsonlite)
-library(httr)
+```
+
+
+### Reading html file and parsing. 
+
+htmlParse is used to parse the html content and invoked readHTMLTable to extract the html table. 
+
+```{r html_parse_df}
+html.url <- "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.html"
+
+html.url.content= getURL(html.url)
+books.html <- htmlParse(file= html.url.content )
+
+
+books.html.df <- as.data.frame(readHTMLTable(books.html))
+books.html.df
 
 ```
 
-```{r}
-html.url <- "books.html"
+### Reading XML file and parsing. 
+
+xmlParse is used to parse the xml content and invoked xmlToDataFrame to convert the content into dataframe
 
 
-comic.html <- htmlParse(html.url )
-print(comic.html)
+```{r xml_parse_df}
+xml.url <- "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.xml"
+
+xml.url.content= getURL(xml.url)
+
+
+xml.url.content <- xmlParse(file=xml.url.content)
+xml.url.df <- xmlToDataFrame(xml.url.content)
+xml.url.df
 
 ```
+
+### Reading JSON file and parsing. 
+
+fromJSON is used to parse and convert into the json df
+
+
+```{r json_parse_df}
+json.url <- "https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.json"
+json.url.content= getURL(json.url)
+json.url.df <- fromJSON(json.url.content)
+json.url.df
+```
+
+### Conclusion
+
+All three dataframes are almost same other than very minor difference in the column name. For e.g the column names in html df has a dot, but for xml and json  has _. Also the column name is prefixed with a NULL. 
+
+

@@ -129,7 +129,83 @@ $(document).ready(function () {
 </div>
 
 
+<div id="assignment-working-with-xml-and-json-in-r" class="section level2">
+<h2>Assignment – Working with XML and JSON in R</h2>
+<p>Here is the assignmnet work statment:</p>
+<p>Pick three of your favorite books on one of your favorite subjects. At least one of the books should have more than one author. For each book, include the title, authors, and two or three other attributes that you find interesting. Take the information that you’ve selected about these three books, and separately create three files which store the book’s information in HTML (using an html table), XML, and JSON formats (e.g. “books.html”, “books.xml”, and “books.json”). To help you better understand the different file structures, I’d prefer that you create each of these files “by hand” unless you’re already very comfortable with the file formats. Write R code, using your packages of choice, to load the information from each of the three sources into separate R data frames. Are the three data frames identical? Your deliverable is the three source files and the R code. If you can, package your assignment solution up into an .Rmd file and publish to rpubs.com. [This will also require finding a way to make your three text files accessible from the web].</p>
+<div id="libraries-requried" class="section level3">
+<h3>Libraries Requried</h3>
+<pre class="r"><code>library(XML)    
+library(RCurl)  ## required for GetURL method </code></pre>
+<pre><code>## Loading required package: bitops</code></pre>
+<pre class="r"><code>library(jsonlite)</code></pre>
+</div>
+<div id="reading-html-file-and-parsing." class="section level3">
+<h3>Reading html file and parsing.</h3>
+<p>htmlParse is used to parse the html content and invoked readHTMLTable to extract the html table.</p>
+<pre class="r"><code>html.url &lt;- &quot;https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.html&quot;
 
+html.url.content= getURL(html.url)
+books.html &lt;- htmlParse(file= html.url.content )
+
+
+books.html.df &lt;- as.data.frame(readHTMLTable(books.html))
+books.html.df</code></pre>
+<pre><code>##                 NULL.Book.Name                NULL.Author
+## 1                 The Talisman Stephen King, Peter Straub
+## 2                    The Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1             Maria Valtorta
+##                  NULL.Publisher NULL.Year.Published NULL.Pages
+## 1                  Pocket Books                1984        944
+## 2                 Penguin Books                1993         96
+## 3 Centro Editoriale Valtortiano                2000        995
+##   NULL.Language
+## 1       English
+## 2       English
+## 3       English</code></pre>
+</div>
+<div id="reading-xml-file-and-parsing." class="section level3">
+<h3>Reading XML file and parsing.</h3>
+<p>xmlParse is used to parse the xml content and invoked xmlToDataFrame to convert the content into dataframe</p>
+<pre class="r"><code>xml.url &lt;- &quot;https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.xml&quot;
+
+xml.url.content= getURL(xml.url)
+
+
+xml.url.content &lt;- xmlParse(file=xml.url.content)
+xml.url.df &lt;- xmlToDataFrame(xml.url.content)
+xml.url.df</code></pre>
+<pre><code>##                      Book_Name                     Author
+## 1                 The Talisman Stephen King, Peter Straub
+## 2                        Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1             Maria Valtorta
+##                       Publisher Year_Published Pages Language
+## 1                  Pocket Books           1984   944  English
+## 2                 Penguin Books           1993    96  English
+## 3 Centro Editoriale Valtortiano           1990   995  English</code></pre>
+</div>
+<div id="reading-json-file-and-parsing." class="section level3">
+<h3>Reading JSON file and parsing.</h3>
+<p>fromJSON is used to parse and convert into the json df</p>
+<pre class="r"><code>json.url &lt;- &quot;https://raw.githubusercontent.com/charlsjoseph/CUNY-Data607/master/week7/books.json&quot;
+json.url.content= getURL(json.url)
+json.url.df &lt;- fromJSON(json.url.content)
+json.url.df</code></pre>
+<pre><code>## $books
+##                       Book_Name                     Author
+## 1                  The Talisman Stephen King, Peter Straub
+## 2                         Pearl             John Steinbeck
+## 3 POEM OF THE MAN-GOD Volume 1              Maria Valtorta
+##                       Publisher Year Pages Language
+## 1                  Pocket Books 1984   944  English
+## 2                 Penguin Books 1993    96  English
+## 3 Centro Editoriale Valtortiano 1990   995  English</code></pre>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>All three dataframes are almost same other than very minor difference in the column name. For e.g the column names in html df has a dot, but for xml and json has _. Also the column name is prefixed with a NULL.</p>
+</div>
+</div>
 
 
 
