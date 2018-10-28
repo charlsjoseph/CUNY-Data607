@@ -1,0 +1,86 @@
+---
+title: "Assignment - Web APIs"
+author: "Charls Joseph"
+date: "October 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#install.packages("rtimes")
+library(RCurl)  ## required for GetURL method 
+library(XML)   
+library(jsonlite)
+library(kableExtra)
+library(knitr)
+library('dplyr')
+library('rtimes')
+```
+
+# Assignment - Web APIs
+
+Assignment ask: 
+
+The New York Times web site provides a rich set of APIs, as described here: http://developer.nytimes.com/docs
+You'll need to start by signing up for an API key. Your task is to choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it to an R dataframe.
+
+
+After reading the New York Times api documentation, I decided to make use of their GET APi using the consumer api key. I tried to fetch the data pertaining to topic "Artificial Intelligence". Below is the code snippet. 
+The meta data shows it returned 688 records. 
+
+
+```{r}
+
+url <- getURL("https://api.nytimes.com/svc/search/v2/articlesearch.json?api_key=35fe36fbf80e4f078f712490a23490ae&q=%22artificial%20intelligence%22&begin_date=20171001&end_date=20181003&all_results")
+
+nytimes_DF <- fromJSON(url) 
+totalhits <- nytimes_DF[3]$response$meta$hits
+totalhits
+
+```
+
+The result data is extracted and converted into a dataframe and is printed below. I'm seeing a problem here. Although the meta data shows 688 results, the data frame has only 10 records. The reason why it is returned 10 record is that the api returns only the first page. A page contains only 10 results. API has a pagination mechanism, so we need to individually pull each pages seperatly. 
+
+In order to resolve, we would need to fetch the individual page seperatly by call the GET api over and over. 
+
+
+```{r}
+data_GetCallDF <- nytimes_DF$response$docs %>%  select("web_url", "source", "pub_date", "document_type", "score") %>% data.frame() 
+
+data_GetCallDF %>%
+  kable() %>%
+  kable_styling()
+
+```
+
+
+Another Option
+Let's try another approach. NYT has published r package(rtimes) which acts as a client. I will use same search criteria and pull all records in single shot(all_results = TRUE). There is a drawback here too. If it reaches the limit, it automatically gets timeout. Hence pagination is the only solution.. 
+
+
+```{r}
+Sys.setenv(NYTIMES_GEO_KEY = "35fe36fbf80e4f078f712490a23490ae")
+Sys.setenv(NYTIMES_AS_KEY = "35fe36fbf80e4f078f712490a23490ae")
+Sys.setenv(PROPUBLICA_API_KEY = "35fe36fbf80e4f078f712490a23490ae")
+
+x <- as_search(q="artificial intelligence", begin_date = "20171001",
+end_date = '20181003', all_results = TRUE)
+```
+
+The total number of results fetched is 718, where as the total number of results fetched via GET call is  688. Looks like both are using different interface to pull from the database and there is some anomaly. 
+
+```{r}
+
+nrow(x$data)
+
+```
+
+Below is the data fetched from the rtimes package(as_search method)
+```{r}
+finalDF <- x$data %>% select("web_url","pub_date","source","score","byline.organization","type_of_material")
+
+finalDF %>%
+  kable() %>%
+  kable_styling()
+```
