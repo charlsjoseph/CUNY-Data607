@@ -1,0 +1,39 @@
+---
+title: "recommender"
+author: "Charls Joseph"
+date: "November 8, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+FB video feeds:
+
+I found quite interesting on how the facebook recommends videos to the user's video feeds. I went through couple of forums, articles to figure out how the facebook is accomplishing this on a high level. Although there is no concrete source on how this is done in facebook, youtube was quite open to reveal some points on how they do.
+
+Basically they use associate learning(apriori algorithm) to find the association of different videos among different user who watched that. There is a commonly used term 'User who bought items also bought" to better understand on how the algorithm works. The Apriori algorithm takes into consider all possible combination of video associations and calculate a parameter called 'lift' which decide how strongly a new video will also be liked by the user from the video he already watched. Some of the metrics used here is view count, watch time and it generates ranked video recommendations. Additionally there can by multiple techniques used like NLP(to rank based on the reviews or comments) and extract the audio captions that helps to related multiple videos. 
+
+The 3 scenario design questions for this web site.  
+
+1. Who are the target users ? 
+
+facebook users who regularly watch videos through the  video feed. 
+
+2. What are their key goals ? 
+
+recommend similar videos which are not watched by the users. 
+
+3. How can you help accomplish the goal ? 
+
+Using associative learning algorithm
+
+Ref : https://mashable.com/2014/07/07/facebook-video-recommendations/#y1Jh6R2b3Zqa
+
+Ref: https://www.youtube.com/watch?v=BsCeNCVb-d8
+
+Also found an interesting article Parable of the beer and diaper:  
+
+https://www.theregister.co.uk/2006/08/15/beer_diapers/
+
