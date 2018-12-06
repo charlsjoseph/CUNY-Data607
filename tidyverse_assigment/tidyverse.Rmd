@@ -1,0 +1,91 @@
+---
+title: "tidyverse_assignment"
+author: "Charls Joseph"
+date: "December 5, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tidyverse assignment. 
+
+
+in this assignment, I was asked to explore a tidyverse package and show an example on how it works. 
+Here, I am trying to explore 'purrr' and broom packages and see what features it provides. 
+
+## purrr and broom packages 
+
+`purrr` is kind of like `dplyr` for lists. It helps you repeatedly apply functions.  `purrr` makes the API consistent, encourages type specificity, and provides some nice shortcuts and speed ups. Lets explore some basic usage and dive into some complex use-cases.  
+
+
+
+```{r}
+library(purrr)
+library(dplyr)
+
+map(1:4,  sqrt)
+
+# using a formulae with tilde 
+map(1:4,  ~ sqrt(2*.))
+map(1:4,  ~ log(3, base = .))
+
+```
+
+# map_xxx  type-specifies the output type. 
+
+```{r}
+map_dbl(1:4,  ~ log(3, base = .))
+#And throws an error if any output isn't of the expected type (which is a good thing!).
+
+```
+
+
+`map2` is like `mapply` -- apply a function over two lists in parallel. `map_n` generalizes to any number of lists.
+
+```{r map2}
+fwd = 1:10
+bck = 10:1
+map2_dbl(fwd, bck, `^`)
+```
+
+
+`map_if` tests each element on a function and if true applies the second function, if false returns the original element.
+
+```{r map_if}
+data_frame(ints = 1:5, lets = letters[1:5], sqrts = ints^.5) %>% map_if(is.numeric, ~ .^2) 
+```
+
+Let's see if we can really make this purrr... Fit a linear model of winpercent by every combination of two predictors in the dataset and see which two predict best. We will select predictors who 'rmse' ( root mean square error) is lesser.  
+
+```{r}
+library(readr)
+candy_data <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/candy-power-ranking/candy-data.csv")
+
+test <- candy_data[1:19 , ]
+head(candy_data)
+
+```
+
+'augment' is a method from broom package that returns information about individual observations to a dataset, such as fitted values or influence measures.
+
+```{r diamonds predictors}
+
+library(broom)
+train = sample(nrow(candy_data), floor(nrow(candy_data) * .67))
+
+testdata <- candy_data[1:56 , ]
+head(testdata)
+
+setdiff(names(candy_data), "winpercent") %>%
+  combn(2, paste, collapse = " + ") %>%
+  structure(., names = .) %>%
+  map(~ formula(paste("winpercent ~ ", .x))) %>%
+  map(lm, data = candy_data[train, ]) %>%
+  map_df(augment, newdata = testdata, .id = "predictors") %>%
+  group_by(predictors) %>% summarize(rmse = sqrt(mean((winpercent - .fitted)^2))) %>%
+  arrange(rmse)
+```
+
+
