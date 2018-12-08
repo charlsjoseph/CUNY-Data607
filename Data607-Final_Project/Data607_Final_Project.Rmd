@@ -169,7 +169,6 @@ if(FALSE) {
 require(devtools)
 #install_github("sentiment140", "okugami79")
 library(sentiment)
-
 nrow(iphone_xs)
 sentiments_iphone <- sentiment(iphone_xs$text)
 table(sentiments_iphone$polarity)
